@@ -3,6 +3,7 @@ from rest_framework import viewsets, permissions, status
 from .serializers import ComidaSerializer, CategoriaSerializer, MenusSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.exceptions import ParseError
 
 
 class TipoComidaViewSet(viewsets.ModelViewSet):
@@ -18,11 +19,16 @@ class MenusViewSet(viewsets.ModelViewSet):
     queryset = Menus.objects.all()
     serializer_class = MenusSerializer
 
-# class MostrarMenus(APIView):
-#     def get(self, request, *args, **kwargs):
-        
+class MostrarMenus(APIView):
+    def get(self, request, categoria_id=None, **kwargs):
+        if categoria_id is None:
+            return Response({"msj": "Por favor, proporciona una categoría válida en la URL."}, status=status.HTTP_400_BAD_REQUEST)
 
-#         return Response({"msj": "Probando la ruta para mostrar los menus", "data": "Mostrando..."})
+        print(categoria_id)
+        menu = Menus.objects.filter(categoria_id=categoria_id)
+        serializer = MenusSerializer(menu, many=True).data
+        return Response({"msj": "Probando la ruta para mostrar los menus", "data": serializer})
+
 
 
 # class MostrarCategoriaViewSet(APIView):
