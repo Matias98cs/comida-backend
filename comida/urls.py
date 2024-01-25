@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .api import TipoComidaViewSet, CategoriaViewSet, MenusViewSet, MostrarCategoriaViewSet, MostrarComidasConCategoriasViewSet
+from .api import TipoComidaViewSet, CategoriaViewSet, MenusViewSet
+# ,MostrarCategoriaViewSet, MostrarComidasConCategoriasViewSet
 
 router = DefaultRouter()
 router.register(r'tipo_comida', TipoComidaViewSet)
@@ -10,6 +11,6 @@ router.register(r'menus', MenusViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('api/mostrarcategorias/<int:tipocomida>', MostrarCategoriaViewSet.as_view(), name='mostarcategorias' ),
-    path('api/mostrarcomidasycategorias/', MostrarComidasConCategoriasViewSet.as_view(), name='mostrarcomidasycategorias' ),
+    # path('api/mostrarcategorias/<int:tipocomida>', MostrarCategoriaViewSet.as_view(), name='mostarcategorias' ),
+    # path('api/mostrarcomidasycategorias/', MostrarComidasConCategoriasViewSet.as_view(), name='mostrarcomidasycategorias' ),
 ]

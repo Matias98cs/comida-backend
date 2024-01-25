@@ -18,32 +18,32 @@ class MenusViewSet(viewsets.ModelViewSet):
     queryset = Menus.objects.all()
     serializer_class = MenusSerializer
 
-class MostrarCategoriaViewSet(APIView):
-    def get(self, request, tipocomida, format=None):
-        print(f"El parametro es {tipocomida}")
-        categorias = Categoria.objects.filter(tipocomida=tipocomida)
-        serializer = CategoriaSerializer(categorias, many=True)
+# class MostrarMenus(APIView):
+#     def get(self, request, *args, **kwargs):
+        
 
-        return Response({"msj": f"Comidas para {tipocomida}", "data": serializer.data, "status": status.HTTP_200_OK})
+#         return Response({"msj": "Probando la ruta para mostrar los menus", "data": "Mostrando..."})
+
+
+# class MostrarCategoriaViewSet(APIView):
+#     def get(self, request, tipocomida, format=None):
+#         print(f"El parametro es {tipocomida}")
+#         categorias = Categoria.objects.filter(tipocomida=tipocomida)
+#         serializer = CategoriaSerializer(categorias, many=True)
+
+#         return Response({"msj": f"Comidas para {tipocomida}", "data": serializer.data, "status": status.HTTP_200_OK})
 
 # class MostrarComidasConCategoriasViewSet(viewsets.ModelViewSet):
-#     queryset = TipoComida.objects.all()
-#     serializer_class = ComidaSerializer
-
-#     def list(self, request, *args, **kwargs):
-#         tipos_comida = self.get_queryset()
-#         serializer = self.get_serializer(tipos_comida, many=True)
-#         data = serializer.data
-#         for tipo_comida, serialized_data in zip(tipos_comida, data):
-#             categorias = tipo_comida.categoria_set.all()
-#             categorias_data = CategoriaSerializer(categorias, many=True).data
-#             serialized_data['categorias'] = categorias_data
-#         return Response({"mensaje": "Comidas con sus categorías", "data": data})
-class MostrarComidasConCategoriasViewSet(APIView):
-    def get(self, request, format=None):
-        tipos_comidas = TipoComida.objects.prefetch_related('categoria')
-        serializer = ComidaSerializer(tipos_comidas, many=True).data
-        return Response({"msj": "Todas las comidas y sus categorías", "data": serializer})
+#     tipocomida = TipoComida.objects.all()
+#     serializer = ComidaSerializer(instance=tipocomida, many=True)
+    # serializer.data
+     
+# class MostrarComidasConCategoriasViewSet(APIView):
+#     def get(self, request, format=None):
+#         print('Mostrar comidas con sus categorias')
+#         tipos_comidas = TipoComida.objects.prefetch_related('categoria')
+#         serializer = ComidaSerializer(tipos_comidas, many=True).data
+#         return Response({"msj": "Todas las comidas y sus categorías", "data": serializer})
     # def get(self, request, format=None):
     #     print(f"Mostrando todas las comidas y categorias")
     #     tipos_comida = TipoComida.objects.all()

@@ -7,6 +7,9 @@ from django.utils import timezone
 class TipoComida(models.Model):
     nombre = models.CharField(max_length=200, unique=True)
 
+    def __str__(self):
+        return self.nombre
+
 class Categoria(models.Model):
     tipocomida = models.ForeignKey(TipoComida, related_name='categoria',on_delete=models.CASCADE)
     nombre = models.CharField(max_length=200)
