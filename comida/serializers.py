@@ -26,3 +26,8 @@ class MenusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menus
         fields = "__all__"
+
+class PedirMenuSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pedido
+        fields = "__all__"

@@ -1,6 +1,6 @@
 from .models import TipoComida, Categoria, Menus, Pedido
 from rest_framework import viewsets, permissions, status
-from .serializers import ComidaSerializer, CategoriaSerializer, MenusSerializer
+from .serializers import ComidaSerializer, CategoriaSerializer, MenusSerializer, PedirMenuSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ParseError
@@ -29,7 +29,19 @@ class MostrarMenus(APIView):
         serializer = MenusSerializer(menu, many=True).data
         return Response({"msj": "Probando la ruta para mostrar los menus", "data": serializer})
 
+class PedirMenuViewSet(APIView):
+    def post(self, request, *args, **kwargs):
+        pedido_cliente = request.data
+        if not all(value != '' for value in pedido_cliente.values()):
+            print('Debe completar todos los campos')
+            return Response({"msj": "Debe ingresar todos los campos", "estado":status.HTTP_400_BAD_REQUEST})
+        
+        crear_pedido = Pedido.objects.create(nombre=pedido_cliente['nombre'], precio=pedido_cliente['precio'])
+        pedido_serializer = PedirMenuSerializer(crear_pedido).data
 
+        # print(crear_pedido)
+        # pedido_serializer = PedirMenuSerializer(crear_pedido).data
+        return Response({"msj": "Menu pedido", "data": pedido_serializer})
 
 # class MostrarCategoriaViewSet(APIView):
 #     def get(self, request, tipocomida, format=None):
