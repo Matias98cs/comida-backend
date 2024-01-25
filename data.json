@@ -1,0 +1,130 @@
+{
+    "Almuerzo": {
+        "Carnes": [
+            {
+                "producto": "Sandwich de bondiola",
+                "precio": 5000
+            },
+            {
+                "producto": "Milanesa napolitana",
+                "precio": 4500
+            },
+            {
+                "producto": "Parrillada",
+                "precio": 7000
+            },
+            {
+                "producto": "Bife de chorizo",
+                "precio": 6000
+            }
+        ],
+        "Ensaladas": [
+            {
+                "producto": "Ensalada cesar",
+                "precio": 4000
+            },
+            {
+                "producto": "Ensalada de pollo",
+                "precio": 4500
+            },
+            {
+                "producto": "Ensalada de atun",
+                "precio": 4000
+            }
+        ]
+    },
+    "Bebidas": {
+        "Aguas saborizadas": [
+            {
+                "producto": "Agua saborizada de limon",
+                "precio": 1500
+            },
+            {
+                "producto": "Agua saborizada de naranja",
+                "precio": 1200
+            },
+            {
+                "producto": "Agua saborizada de manzana",
+                "precio": 1300
+            }
+        ],
+        "Gaseosas": [
+            {
+                "producto": "Coca cola",
+                "precio": 1000
+            },
+            {
+                "producto": "Pepsi",
+                "precio": 1500
+            },
+            {
+                "producto": "Sprite",
+                "precio": 1000
+            },
+            {
+                "producto": "Fanta",
+                "precio": 1000
+            }
+        ]
+    },
+    "Desayuno": {
+        "Bebidas": [
+            {
+                "producto": "Cafe",
+                "precio": 2000
+            },
+            {
+                "producto": "Te",
+                "precio": 100
+            },
+            {
+                "producto": "Chocolate",
+                "precio": 200
+            }
+        ],
+        "Comidas": [
+            {
+                "producto": "Tostadas",
+                "precio": 2000
+            },
+            {
+                "producto": "Croissant",
+                "precio": 9000
+            },
+            {
+                "producto": "Medialunas",
+                "precio": 2000
+            }
+        ]
+    },
+    "Merienda": {
+        "Cafeteria": [
+            {
+                "producto": "Cafe",
+                "precio": 2000
+            },
+            {
+                "producto": "Te",
+                "precio": 100
+            },
+            {
+                "producto": "Chocolate",
+                "precio": 200
+            }
+        ],
+        "Pasteleria": [
+            {
+                "producto": "Torta de chocolate",
+                "precio": 2000
+            },
+            {
+                "producto": "Torta de frutilla",
+                "precio": 9000
+            },
+            {
+                "producto": "Torta de manzana",
+                "precio": 2000
+            }
+        ]
+    }
+}
