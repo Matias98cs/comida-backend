@@ -1,12 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .api import TipoComidaViewSet, CategoriaViewSet, MenusViewSet, MostrarMenus, PedirMenuViewSet
+from .api import TipoComidaViewSet, CategoriaViewSet, MenusViewSet, MostrarMenus, PedirMenuViewSet, MostrarPedidosViewSet
 # ,MostrarCategoriaViewSet, MostrarComidasConCategoriasViewSet
 
 router = DefaultRouter()
 router.register(r'tipo_comida', TipoComidaViewSet)
 router.register(r'categoria', CategoriaViewSet)
 router.register(r'menus', MenusViewSet)
+router.register(r'mostrar-pedidos', MostrarPedidosViewSet)
 # router.register(r'pedir-menu', PedirMenuViewSet)
 # router.register(r'comidaycategorias', MostrarComidasConCategoriasViewSet)
 

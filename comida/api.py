@@ -42,6 +42,10 @@ class PedirMenuViewSet(APIView):
         # print(crear_pedido)
         # pedido_serializer = PedirMenuSerializer(crear_pedido).data
         return Response({"msj": "Menu pedido", "data": pedido_serializer})
+    
+class MostrarPedidosViewSet(viewsets.ModelViewSet):
+    queryset = Pedido.objects.all().order_by('-hora_pedido') #[:3] obtiene 3 registros
+    serializer_class = PedirMenuSerializer
 
 # class MostrarCategoriaViewSet(APIView):
 #     def get(self, request, tipocomida, format=None):
