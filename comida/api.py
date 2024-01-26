@@ -13,20 +13,21 @@ class TipoComidaViewSet(viewsets.ModelViewSet):
 class MostrarMenus(APIView):
     def get(self, request, *args, **kwargs):
         tipo_comida =  request.query_params.get('tipo_comida', None)
-        categoria = request.query_params.get('categoria', None)
-
-        if tipo_comida is None and categoria is None:
-            return Response({"msj": "Por favor, proporciona una categoría válida en la URL."}, status=status.HTTP_400_BAD_REQUEST)
+        categoria = request.query_params.get('categoria', None)        
+        try:    
+            menus = Menus.objects.filter(categoria__tipocomida__nombre=tipo_comida, categoria__nombre=categoria)
+            if not menus.exists():
+                return Response({"msj": "No se encontraron menus para esos datos"}, status=status.HTTP_404_NOT_FOUND)
+            serializer = MenusSerializer(menus, many=True).data
+            return Response({"msj": "Mostrando menus", "data": serializer}, status=status.HTTP_200_OK)
+        except Menus.DoesNotExist:
+            return Response({"msj": "Hubo un error al obtener los menus"}, status=status.HTTP_404_NOT_FOUND)
         
-        menus = Menus.objects.filter(categoria__tipocomida__nombre=tipo_comida, categoria__nombre=categoria)
-        serializer = MenusSerializer(menus, many=True).data
-        return Response({"msj": "Probando la ruta para mostrar los menus", "data": serializer})
-    
 class PedirMenuViewSet_2(APIView):
     def get(self, request):
         pedidos = Pedido.objects.all().order_by('-hora_pedido') #[:3] obtiene 3 registros
         serializer = PedirMenuSerializer(pedidos, many=True).data
-        return Response({"msj": "Pedidos", "data": serializer})
+        return Response({"msj": "Pedidos", "data": serializer}, status=status.HTTP_200_OK)
     def post(self, request, *args, **kwargs):
         pedido = request.data
         pedido_id = pedido.get('menu_id')
@@ -38,9 +39,9 @@ class PedirMenuViewSet_2(APIView):
             menu_serialize = MenusSerializer(menu).data
             crear_pedido = Pedido.objects.create(nombre=menu_serialize['nombre'], precio=menu_serialize['precio'])
             pedido_serealizer = PedirMenuSerializer(crear_pedido).data
-            return Response({"msj": "Probando pedir menu 2", "data": pedido_serealizer})
+            return Response({"msj": "Producto pedido con exito", "data": pedido_serealizer}, status=status.HTTP_201_CREATED)
         except Menus.DoesNotExist:
-            return Response({"msj": "No existe ese menu"})
+            return Response({"msj": "Hubo un error al pedir su producto"}, status=status.HTTP_400_BAD_REQUEST)
 
 # class CategoriaViewSet(viewsets.ModelViewSet):
 #     queryset = Categoria.objects.all()
