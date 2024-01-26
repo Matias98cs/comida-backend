@@ -47,6 +47,22 @@ class MostrarPedidosViewSet(viewsets.ModelViewSet):
     queryset = Pedido.objects.all().order_by('-hora_pedido') #[:3] obtiene 3 registros
     serializer_class = PedirMenuSerializer
 
+class PedirMenuViewSet_2(APIView):
+    def post(self, request, *args, **kwargs):
+        pedido = request.data
+        pedido_id = pedido.get('menu_id')
+        if not pedido_id:
+            return Response({"msj": "Debe mandar el id del menu para pedir"})
+    
+        try:
+            menu = Menus.objects.get(id=pedido_id)
+            menu_serialize = MenusSerializer(menu).data
+            crear_pedido = Pedido.objects.create(nombre=menu_serialize['nombre'], precio=menu_serialize['precio'])
+            pedido_serealizer = PedirMenuSerializer(crear_pedido).data
+            return Response({"msj": "Probando pedir menu 2", "data": pedido_serealizer})
+        except Menus.DoesNotExist:
+            return Response({"msj": "No existe ese menu"})
+        
 # class MostrarCategoriaViewSet(APIView):
 #     def get(self, request, tipocomida, format=None):
 #         print(f"El parametro es {tipocomida}")
