@@ -10,40 +10,23 @@ class TipoComidaViewSet(viewsets.ModelViewSet):
     queryset = TipoComida.objects.all()
     serializer_class = ComidaSerializer
 
-class CategoriaViewSet(viewsets.ModelViewSet):
-    queryset = Categoria.objects.all()
-    serializer_class = CategoriaSerializer
-
-class MenusViewSet(viewsets.ModelViewSet):
-    queryset = Menus.objects.all()
-    serializer_class = MenusSerializer
-
 class MostrarMenus(APIView):
-    def get(self, request, categoria_id=None, **kwargs):
-        if categoria_id is None:
+    def get(self, request, *args, **kwargs):
+        tipo_comida =  request.query_params.get('tipo_comida', None)
+        categoria = request.query_params.get('categoria', None)
+
+        if tipo_comida is None and categoria is None:
             return Response({"msj": "Por favor, proporciona una categoría válida en la URL."}, status=status.HTTP_400_BAD_REQUEST)
-
-        print(categoria_id)
-        menu = Menus.objects.filter(categoria_id=categoria_id)
-        serializer = MenusSerializer(menu, many=True).data
-        return Response({"msj": "Probando la ruta para mostrar los menus", "data": serializer})
-
-class PedirMenuViewSet(APIView):
-    def post(self, request, *args, **kwargs):
-        pedido_cliente = request.data
-        if not all(value != '' for value in pedido_cliente.values()):
-            print('Debe completar todos los campos')
-            return Response({"msj": "Debe ingresar todos los campos", "estado":status.HTTP_400_BAD_REQUEST})
         
-        crear_pedido = Pedido.objects.create(nombre=pedido_cliente['nombre'], precio=pedido_cliente['precio'])
-        pedido_serializer = PedirMenuSerializer(crear_pedido).data
-        return Response({"msj": "Menu pedido", "data": pedido_serializer})
+        menus = Menus.objects.filter(categoria__tipocomida__nombre=tipo_comida, categoria__nombre=categoria)
+        serializer = MenusSerializer(menus, many=True).data
+        return Response({"msj": "Probando la ruta para mostrar los menus", "data": serializer})
     
-class MostrarPedidosViewSet(viewsets.ModelViewSet):
-    queryset = Pedido.objects.all().order_by('-hora_pedido') #[:3] obtiene 3 registros
-    serializer_class = PedirMenuSerializer
-
 class PedirMenuViewSet_2(APIView):
+    def get(self, request):
+        pedidos = Pedido.objects.all().order_by('-hora_pedido') #[:3] obtiene 3 registros
+        serializer = PedirMenuSerializer(pedidos, many=True).data
+        return Response({"msj": "Pedidos", "data": serializer})
     def post(self, request, *args, **kwargs):
         pedido = request.data
         pedido_id = pedido.get('menu_id')
@@ -58,6 +41,33 @@ class PedirMenuViewSet_2(APIView):
             return Response({"msj": "Probando pedir menu 2", "data": pedido_serealizer})
         except Menus.DoesNotExist:
             return Response({"msj": "No existe ese menu"})
+
+# class CategoriaViewSet(viewsets.ModelViewSet):
+#     queryset = Categoria.objects.all()
+#     serializer_class = CategoriaSerializer
+
+# class MenusViewSet(viewsets.ModelViewSet):
+#     queryset = Menus.objects.all()
+#     serializer_class = MenusSerializer
+
+
+
+# class PedirMenuViewSet(APIView):
+#     def post(self, request, *args, **kwargs):
+#         pedido_cliente = request.data
+#         if not all(value != '' for value in pedido_cliente.values()):
+#             print('Debe completar todos los campos')
+#             return Response({"msj": "Debe ingresar todos los campos", "estado":status.HTTP_400_BAD_REQUEST})
+        
+#         crear_pedido = Pedido.objects.create(nombre=pedido_cliente['nombre'], precio=pedido_cliente['precio'])
+#         pedido_serializer = PedirMenuSerializer(crear_pedido).data
+#         return Response({"msj": "Menu pedido", "data": pedido_serializer})
+    
+# class MostrarPedidosViewSet(viewsets.ModelViewSet):
+#     queryset = Pedido.objects.all().order_by('-hora_pedido') #[:3] obtiene 3 registros
+#     serializer_class = PedirMenuSerializer
+
+
         
 # class MostrarCategoriaViewSet(APIView):
 #     def get(self, request, tipocomida, format=None):
