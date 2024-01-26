@@ -9,7 +9,6 @@ from rest_framework.exceptions import ParseError
 class TipoComidaViewSet(viewsets.ModelViewSet):
     queryset = TipoComida.objects.all()
     serializer_class = ComidaSerializer
-    # permission_classes = [permissions.AllowAny]
 
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
@@ -38,9 +37,6 @@ class PedirMenuViewSet(APIView):
         
         crear_pedido = Pedido.objects.create(nombre=pedido_cliente['nombre'], precio=pedido_cliente['precio'])
         pedido_serializer = PedirMenuSerializer(crear_pedido).data
-
-        # print(crear_pedido)
-        # pedido_serializer = PedirMenuSerializer(crear_pedido).data
         return Response({"msj": "Menu pedido", "data": pedido_serializer})
     
 class MostrarPedidosViewSet(viewsets.ModelViewSet):
