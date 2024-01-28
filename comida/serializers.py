@@ -1,15 +1,9 @@
 from rest_framework import serializers
+from django.utils import timezone
 from .models import TipoComida, Categoria, Pedido, Menus
 
 
-# class ComidaSerializer(serializers.ModelSerializer):
-#     categoria = serializers.StringRelatedField(many=True)
-#     class Meta:
-#         model = TipoComida
-#         fields = "__all__"
-
 class CategoriaSerializer(serializers.ModelSerializer):
-    # categoria = serializers.StringRelatedField(many=True, read_only=True)
     class Meta:
         model = Categoria
         fields = "__all__"
@@ -20,8 +14,6 @@ class ComidaSerializer(serializers.ModelSerializer):
         model = TipoComida
         fields = "__all__"
 
-
-
 class MenusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menus
@@ -31,3 +23,8 @@ class PedirMenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
         fields = "__all__"
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['hora_pedido'] = timezone.localtime(instance.hora_pedido).strftime('%Y-%m-%d %H:%M:%S')
+        return representation
